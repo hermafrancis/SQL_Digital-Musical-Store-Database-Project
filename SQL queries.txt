@@ -1,0 +1,63 @@
+/* Query 1: query used for first insight/
+
+
+Select DISTINCT(a.ArtistId),b.Name,count(c.TrackId) AS songs
+FROM Album a
+LEFT JOIN artist b
+on a.ArtistId = b.ArtistId
+LEFT JOIN Track c
+on a.AlbumId = c.AlbumId
+LEFT JOIN Genre d
+on c.GenreId = d.GenreId
+WHERE d.Name= ('Rock')
+GROUP by 1, 2
+ORDER by songs DESC
+LIMIT 10
+
+
+/* Query 2: query used for second insight/
+
+Select DISTINCT b.EmployeeId, b.FirstName, b.LastName, count(a.SupportRepId) AS Customers
+FROM Customer a
+LEFT JOIN Employee b
+on b.EmployeeId = a.SupportRepId
+GROUP by 1
+ORDER by Customers DESC
+
+
+
+/*Query 3: query used for third insight/
+
+CREATE VIEW ArtistView
+AS
+SELECT DISTINCT a.Name, g.CustomerId,  sum (d.UnitPrice) AS AmountSpent 
+FROM Artist a
+LEFT JOIN Album b
+on a.ArtistId = b.ArtistId
+LEFT JOIN Track c
+on b.AlbumId = c.AlbumId
+LEFT JOIN InvoiceLine d
+on c.TrackId = d.TrackId
+LEFT JOIN Invoice g
+on g.InvoiceId = d.InvoiceId
+GROUP by 1,2
+ORDER by AmountSpent DESC
+
+SELECT e.Name, e.AmountSpent, f.CustomerId, f.FirstName, f.LastName
+FROM ArtistView e 
+LEFT JOIN Customer f
+on e.CustomerId = f.CustomerId
+WHERE e.Name = 'Iron Maiden'
+ORDER by AmountSpent DESC
+LIMIT 5
+
+
+/*Query 4: query used for fourth insight/
+
+SELECT  a.ArtistId, a.Name, count(b.AlbumId) AS AlbumsReleased
+FROM Artist a
+LEFT JOIN Album b
+on a.ArtistId = b.ArtistId
+GROUP by 1
+ORDER by AlbumsReleased DESC
+LIMIT 10
